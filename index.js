@@ -1,6 +1,11 @@
 // This is the Web Server
 const express = require('express');
 const server = express();
+const cors = require('cors');
+server.use(cors())
+
+//process env variables
+require('dotenv').config();
 
 // create logs for everything
 const morgan = require('morgan');
@@ -24,6 +29,12 @@ server.use((req, res, next) => {
 
 // bring in the DB connection
 const { client } = require('./db');
+
+// error handler
+server.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send(err);
+});
 
 // connect to the server
 const PORT = process.env.PORT || 5000;

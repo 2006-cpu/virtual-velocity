@@ -6,4 +6,12 @@ apiRouter.get("/", (req, res, next) => {
   });
 });
 
+apiRouter.use('/users', require('./users'))
+apiRouter.use('/products', require('./products'));
+
+// 404 handler
+apiRouter.get('*', (req, res, next) => {
+    res.status(404).send('Page was not found');
+})
+
 module.exports = apiRouter;

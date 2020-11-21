@@ -1,11 +1,21 @@
-import React from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 
 import {
-  App
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom'
+
+import {
+  App,
 } from './components';
 
 ReactDOM.render(
-  <App />,
+  <Router>
+    <App />
+  </Router>,
   document.getElementById('root')
 );
