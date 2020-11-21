@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from "react";
+import {SingleProduct} from "./"
+import { getOrdersCart } from "../api";
+
 // import { useParams } from "react-router-dom";
 
 //  Add "view cart" button to the navbar that can be used to navigate to the /cart route (*)
 
+// Display the cart (using the single order component with the current user's in-progress order. Use the api call GET /orders/cart) when the url matches /cart (*)
+
 const Cart = (props) => {
+  // const [ order, setOrder ] = useState({})
+
+  // pull in the products in cart. map through the array. require user
+
+  // useEffect(() => {
+  //   getOrdersCart(orderId).then(setOrder)
+  // }, [])
 
   return ( <>
-  <h1> Shopping Car </h1>
+  {/* <h1> {order.name} Shopping Car </h1> */}
     <h5> Welcome USERNAME</h5>
     <p> Ready to checkout? With our stripe integration you can checkout feeling secure.</p>
 
     <div>
-      <h1> (OUR PRODUCT CARDS GO HERE)</h1>
+      <h1> Product Compnent Goes here</h1>
     </div>
+
 
     <div className="mb-3">
         <div className="pt-4">

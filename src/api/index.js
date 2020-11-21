@@ -29,3 +29,16 @@ export async function getProducts() {
     throw error;
   }
 }
+
+export async function getOrdersCart() {
+  // SAM Note. add USER info
+  // using the single order component with the current user's in-progress order. Use the api call GET /orders/cart) when the url matches /cart (*)
+  try {
+    const { data } = await axios.get(`${BASE}/orders/cart`);
+    console.log("data from index API getOrdersCart", data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
