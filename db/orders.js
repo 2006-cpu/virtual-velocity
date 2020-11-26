@@ -42,6 +42,7 @@ const getAllOrders = async () => {
   }
 };
 
+//server errors out at username
 const getOrdersByUser = async ({ username }) => {
   //  select and return an array of orders made by user, include their products
   try {

@@ -1,22 +1,23 @@
-const client = require("./client");
+const { client } = require("./index");
 
-async function createOrderProduct({productId, orderId, price, quantity}) {
+async function createOrderProduct({ productId, orderId, price, quantity }) {
   try {
     const {
       rows: [order_product],
     } = await client.query(
       `
-      INSERT INTO orders ("productId", "orderId", price, quantity)
+      INSERT INTO order_products ("productId", "orderId", price, quantity)
       VALUES ($1, $2, $3, $4)
       RETURNING * ;
         `,
       [productId, orderId, price, quantity]
     );
-    
-    return order_product
+
+    return order_product;
   } catch (error) {
-    throw error
+    throw error;
   }
+}
 
 async function getOrderProductById(id) {
   try {
@@ -36,6 +37,9 @@ async function getOrderProductById(id) {
   }
 }
 
+//if the productId is NOT on the order yet, create a new order_products?
+//conditional within client query?
+//case statement?
 async function addProductToOrder({ orderId, productId, price, quantity }) {
   try {
     const {
@@ -97,6 +101,7 @@ async function destroyOrderProduct(id) {
 
 module.exports = {
   client,
+  createOrderProduct,
   getOrderProductById,
   addProductToOrder,
   updateOrderProduct,

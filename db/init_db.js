@@ -58,33 +58,6 @@ async function buildTables() {
   }
 }
 
-// async function populateInitialOrders() {
-// try {
-//   const ordersToCreate = [
-//     {
-//       id: 1,
-//       status: 'created',
-//       userId: 1,
-//       datePlaced: '01/01/20'
-
-//     },
-//     {
-//       id: 1,
-//       status: 'created',
-//       userId: 1,
-//       datePlaced: '01/01/20'
-
-//     },
-//   ]
-//   const orders = await Promise.all(
-//     ordersToCreate.map((order) => createOrder(order))
-//   )
-//   console.log('order created:', orders)
-// } catch (error) {
-//   throw error;
-// }
-// }
-
 async function populateInitialData() {
   try {
     // create useful starting data
@@ -205,7 +178,7 @@ async function populateInitialData() {
     const users = await Promise.all(
       usersToCreate.map((user) => createUser(user))
     );
-    console.log("order created:", users);
+    console.log("users created:", users);
 
     // ------
 
@@ -226,12 +199,24 @@ async function populateInitialData() {
 
     // -----------
 
+    //correct syntax to create order_products?
     const orderProductsToCreate = [
       {
-        id: 1,
         productId: 1,
         orderId: 1,
-        price: 40000.99,
+        price: 5000,
+        quantity: 1,
+      },
+      {
+        productId: 2,
+        orderId: 1,
+        price: 5001,
+        quantity: 1,
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 5002,
         quantity: 1,
       },
     ];
