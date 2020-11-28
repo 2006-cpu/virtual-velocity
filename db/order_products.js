@@ -82,7 +82,7 @@ async function updateOrderProduct({ id, price, quantity }) {
 async function destroyOrderProduct(id) {
   try {
     const {
-      rows: [routine_activity],
+      rows: [order_product],
     } = await client.query(
       `
         DELETE
@@ -93,7 +93,7 @@ async function destroyOrderProduct(id) {
       [id]
     );
 
-    return routine_activity;
+    return order_product;
   } catch (error) {
     throw error;
   }
