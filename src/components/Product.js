@@ -3,25 +3,31 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "./Product.css";
 import { useParams } from "react-router-dom";
+import {getProducts} from '../api'
 
 const Product = (props) => {
-  const { product, products, setProducts } = props;
+  const { product, products, setProducts, user } = props;
   const { productId } = useParams();
 
   return (
     <>
-      {console.log("prod3", product.name, product.id)}
-      <Card style={{ width: "18rem" }}>
-        <Card.Img variant="top" src={product.imageURL} />
+      { products && products.map(({category, description, id, imageURL, inStock, name, price}) => <>
+
+            <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src={imageURL} />
         <Card.Body>
-          <Card.Title>{product.name}</Card.Title>
-          <Card.Text>{product.description}</Card.Text>
-          <Card.Text>{product.price}</Card.Text>
-          <Card.Text>{product.category}</Card.Text>
-          <Card.Text>{product.inStock}</Card.Text>
+          <Card.Title>{name}</Card.Title>
+          <Card.Text>{description}</Card.Text>
+          <Card.Text>{price}</Card.Text>
+          <Card.Text>{category}</Card.Text>
+          <Card.Text>{inStock}</Card.Text>
           <Button variant="primary">Go somewhere</Button>
         </Card.Body>
       </Card>
+
+      </>
+      )}
+
     </>
   );
 };

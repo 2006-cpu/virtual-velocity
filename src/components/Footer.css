@@ -1,0 +1,19 @@
+#footerdiv {
+  /* position: bottom;
+  clear: both;
+  padding-top: 4rem;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 0; */
+
+  /* //relative? */
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* background-color: red; */
+  color: white;
+  text-align: center;
+}

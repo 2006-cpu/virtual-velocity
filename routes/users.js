@@ -3,12 +3,12 @@ const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET = "hello" } = process.env;
 
-const { createUser, getUserByUsername, getUser } = require("../db/users");
+const { createUser, getUserByUsername, getUser, getOrdersByUser } = require("../db/utils");
 
 const { requireUser } = require("./utils");
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, firstName, lastName, email, isAdmin, imageURL} = req.body;
 
   try {
     const user = await getUserByUsername(username);
@@ -18,7 +18,7 @@ usersRouter.post("/register", async (req, res, next) => {
     } else if (password.length <= 8) {
       res.send({ message: "Password too short!" });
     } else {
-      const user = await createUser({ username, password });
+      const user = await createUser({ username, password, firstName, lastName, email, isAdmin: false, imageURL: ''});
 
       const token = jwt.sign(user, JWT_SECRET);
 
@@ -39,10 +39,10 @@ usersRouter.post("/login", async (req, res, next) => {
     if (user) {
       const token = jwt.sign(user, JWT_SECRET);
 
-      res.send({ 
-          message: "you're logged in!", 
-          user, 
-          token 
+      res.send({
+          message: "you're logged in!",
+          user,
+          token
       });
 
     } else {
@@ -59,10 +59,20 @@ usersRouter.post("/login", async (req, res, next) => {
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
     res.send(req.user);
-    next();
   } catch (error) {
     next(error);
   }
 });
+
+usersRouter.get("/:userId/orders", requireUser, async (req, res, next) => {
+    const { userId } = req.params;
+    try {
+      const orders = await getOrdersByUser(req.user);
+      res.send(orders);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = usersRouter;

@@ -8,17 +8,16 @@ const NavBar = (props) => {
     const { setUser, token, setToken } = props;
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar className="navbar fixed-top" bg="dark" variant="dark">
       <Navbar.Brand href="#home">Virtual Velocity</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link href="/">Home</Nav.Link>
         <Nav.Link href="/products">Products</Nav.Link>
         <Nav.Link href="/cart">Cart</Nav.Link>
-        <Nav.Link href="">Login</Nav.Link>
-        <Nav.Link href="">Register</Nav.Link>
-        <Nav.Link href="">Logout</Nav.Link>
+        <Nav.Link href="/account">Account</Nav.Link>
+      {(!token) && <Nav.Link href="/register">Register</Nav.Link>}
       </Nav>
-      <Login 
+      <Login
         setUser={setUser}
         token={token}
         setToken={setToken}/>

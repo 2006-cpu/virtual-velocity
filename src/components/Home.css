@@ -1,0 +1,44 @@
+body,
+html {
+  height: 100%;
+}
+
+.hero-image {
+  background-image: linear-gradient(rgba(158, 158, 158, 0.534), rgb(0, 0, 0)),
+    url('https://cdn.gamer-network.net/2018/usgamer/pokemon-trading-cards_older.jpg');
+  height: 70vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-text {
+  text-align: center;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(214, 212, 212);
+}
+
+h1 {
+  color: rgb(223, 223, 223);
+  font-size: 3rem;
+}
+
+#homeContent {
+  padding-top: 2rem;
+  text-align: center;
+}
+ul .btnStarted {
+  color: black;
+}
+
+/* a:visited {
+  color: red;
+} */
+
+ul {
+  list-style-type: none;
+}

@@ -1,11 +1,15 @@
 const { client } = require("./index");
-const { createProduct, createOrder, createUser } = require("./utils");
+
+const { 
+    createOrderProduct,
+    createProduct, 
+    createOrder, 
+    createUser,
+    setUserAsAdmin
+} = require("./utils");
 
 async function buildTables() {
   try {
-    client.connect();
-
-
     console.log("Dropping All Tables...");
     await client.query(`
     DROP TABLE IF EXISTS order_products;
@@ -46,11 +50,12 @@ async function buildTables() {
       "productId" INTEGER REFERENCES products(id),
       "orderId" INTEGER REFERENCES orders(id),
       price INTEGER NOT NULL,
-      quantity INTEGER NOT NULL DEFAULT 0
+      quantity INTEGER NOT NULL DEFAULT 0,
+      UNIQUE ("productId", "orderId")
     );
     `);
   } catch (error) {
-    throw error;
+      console.error(error);
   }
 }
 
@@ -143,55 +148,84 @@ async function populateInitialData() {
     const usersToCreate = [
       {
         firstName: "elmar",
-        lastName: 'fudd',
-        email: 'elmarisawesome@me.com',
+        lastName: "fudd",
+        email: "elmarisawesome@me.com",
         username: "elmarisme",
-        password: 'elmar12345',
-        isAdmin: 'false',
+        password: "elmar12345",
       },
 
       {
         firstName: "dougy",
-        lastName: 'fresh',
-        email: 'dougIstheman@me.com',
+        lastName: "fresh",
+        email: "dougIstheman@me.com",
         username: "dougIsMe",
-        password: 'dougy12345',
-        isAdmin: true,
-      }
-    ]
+        password: "dougy12345",
+      },
+    ];
     const users = await Promise.all(
       usersToCreate.map((user) => createUser(user))
     )
-    console.log('order created:', users)
+    await setUserAsAdmin(2);
 
     // ------
 
     const ordersToCreate = [
       {
-        status: 'created',
+        status: "created",
         userId: 1,
-
       },
       {
-        status: 'created',
+        status: "created",
         userId: 1,
-
       },
-    ]
+    ];
     const orders = await Promise.all(
       ordersToCreate.map((order) => createOrder(order))
-    )
-    console.log('order created:', orders)
+    );
+    console.log("order created:", orders);
 
     // -----------
+
+    const orderProductsToCreate = [
+      {
+        productId: 1,
+        orderId: 1,
+        price: 5000,
+        quantity: 1,
+      },
+      {
+        productId: 2,
+        orderId: 1,
+        price: 5001,
+        quantity: 1,
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 5002,
+        quantity: 1,
+      }
+    ];
+    const order_product = await Promise.all(
+      orderProductsToCreate.map((order_product) =>
+        createOrderProduct(order_product)
+      )
+    );
+    console.log("order_product created:", order_product);
+
+
   } catch (error) {
-    throw error;
+      console.error(error);
   }
 }
 
-
-buildTables()
+client.connect()
+  .then(buildTables)
   .then(populateInitialData)
   .catch(console.error)
   .finally(() => client.end());
 
+module.exports = { 
+    buildTables,
+    populateInitialData
+}

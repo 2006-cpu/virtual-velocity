@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Button, Form, FormControl, Alert } from "react-bootstrap";
+import {useHistory} from 'react-router-dom'
 
 import { setLocalToken } from '../util'
 import { Logout } from './';
@@ -16,7 +17,9 @@ export default props => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-  
+    const history = useHistory()
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -27,6 +30,7 @@ export default props => {
                 setLocalToken(loginResponse.token)
                 setToken(loginResponse.token);
                 setUser(loginResponse.user);
+                history.push('/')  //redirects after login
             } else {
                 setError(loginResponse.message)
             }
@@ -34,16 +38,15 @@ export default props => {
             console.error(error);
         }
     }
-  
-    return <> 
-      {(error) && <Alert>{error}</Alert>}  
-      {(token) 
+
+    return <>
+      {(error) && <Alert>{error}</Alert>}
+      {(token)
         ? <Logout setUser={setUser} setToken={setToken} />
         : <Form inline onSubmit={handleSubmit} >
             <FormControl type="text" value={username} onChange={(e) => {setUsername(e.target.value)}} />
             <FormControl type="password" value={password} onChange={(e) => {setPassword(e.target.value)}} />
-            <Button type="submit" >Login</Button> 
-            <Button type="button" >Register</Button> 
+            <Button type="submit" >Login</Button>
           </Form>}
     </>
 }

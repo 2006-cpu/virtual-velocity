@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { getProduct } from "../api";
+import { getProductById } from "../api";
 
 const SingleProduct = () => {
     const [product, setProduct] = useState({});
     const { productId } = useParams();
 
     useEffect(() => {
-        getProduct(productId).then(setProduct);
+        getProductById(productId).then(setProduct);
     }, [])
 
     return (

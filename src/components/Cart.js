@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { SingleOrder } from "./"
 // import { useParams } from "react-router-dom";
 
-//  Add "view cart" button to the navbar that can be used to navigate to the /cart route (*)
+
 
 const Cart = (props) => {
+  const {user, setUser} = props
+  console.log('user in cart', user)
+
+  const handleCheckout = () => {
+    try {
+
+      console.log('link to stripe or authorization HERE')
+
+    } catch (error) {
+      throw error
+    }
+  }
+
 
   return ( <>
-  <h1> Shopping Car </h1>
-    <h5> Welcome USERNAME</h5>
+  <h1> Shopping Cart </h1>
+    {/* <h5> Welcome {user.firstName} {user.lastName}</h5> */}
     <p> Ready to checkout? With our stripe integration you can checkout feeling secure.</p>
 
-    <div>
-      <h1> (OUR PRODUCT CARDS GO HERE)</h1>
-    </div>
+      < SingleOrder />
 
     <div className="mb-3">
         <div className="pt-4">
 
-          <h5 className="mb-3">Cart total:</h5>
+          {/* <h5 className="mb-3">Cart total:</h5>
 
           <ul className="list-group list-group-flush">
             <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
@@ -34,9 +46,13 @@ const Cart = (props) => {
               </div>
               <span><strong>$100 (order_products total price)</strong></span>
             </li>
-          </ul>
+          </ul> */}
 
-          <button type="button" className="btn btn-primary btn-block">go to checkout (onclick link to stripe)</button>
+          <button type="button" className="btn btn-primary btn-block" onClick={ (event) => {
+             event.preventDefault()
+             handleCheckout()
+
+          } }>Check Out</button>
 
         </div>
       </div>
