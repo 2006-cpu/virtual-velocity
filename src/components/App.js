@@ -21,7 +21,7 @@ import { getLocalToken } from "../util";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from "./CheckoutForm";
+import InjectedCheckoutForm from "./CheckoutForm";
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLISHABLE_KEY}`);
 
@@ -87,8 +87,8 @@ const App = () => {
         </Route>
         <Route exact path="/stripe">
           <Elements stripe={stripePromise}>
-            {showStripe === true ? (
-              <CheckoutForm
+            {showStripe ? (
+              <InjectedCheckoutForm
                 showStripe={showStripe}
                 setShowStripe={setShowStripe}
               />

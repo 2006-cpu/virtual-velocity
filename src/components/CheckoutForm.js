@@ -1,8 +1,18 @@
 import React from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import CardSection from "./CardSection";
-import { Button } from "react-bootstrap";
+import {
+  useStripe,
+  useElements,
+  CardElement,
+  Elements,
+  ElementsConsumer,
+} from "@stripe/react-stripe-js";
+// import CardSection from "./CardSection";
+// import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { render } from "react-dom";
+
+import "./CardSection.css";
 
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -12,79 +22,94 @@ import { useHistory } from "react-router-dom";
 // Get the payment token ID submitted by the form:
 // const token = request.body.stripeToken; // Using Express
 
-const CheckoutForm = ({ showStripe, setShowStripe }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  let history = useHistory();
-
-  async function stripeTokenHandler(token) {
-    try {
-      const paymentData = { token: token.id };
-
-      // Use fetch to send the token ID and any other payment data to your server.
-      // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-      const response = await fetch("/api/stripe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(paymentData),
-      });
-
-      // Return and display the result of the charge.
-      return response.json();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const handleSubmit = async (event) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
+class CheckoutForm extends React.Component {
+  handleSubmit = async (event) => {
+    // Block native form submission.
     event.preventDefault();
 
+    const { stripe, elements } = this.props;
+
     if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make  sure to disable form submission until Stripe.js has loaded.
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
       return;
     }
 
-    const card = elements.getElement(CardElement);
-    const result = await stripe.createToken(card);
-    console.log("result", result);
+    // Get a reference to a mounted CardElement. Elements knows how
+    // to find your CardElement because there can only ever be one of
+    // each type of element.
+    const cardElement = elements.getElement(CardElement);
 
-    if (result.error) {
-      // Show error to your customer.
-      console.log(result.error.message);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+    });
+
+    if (error) {
+      console.log("[error]", error);
     } else {
-      // Send the token to your server.
-      // This function does not exist yet; we will define it in the next step.
-      setShowStripe(false);
-      stripeTokenHandler(result.token);
-      history.push("/products");
+      console.log("[PaymentMethod]", paymentMethod);
+      useHistory("./products");
     }
   };
 
+  render() {
+    const { stripe } = this.props;
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+        />
+        <button type="submit" disabled={!stripe}>
+          Pay
+        </button>
+      </form>
+    );
+  }
+}
+
+const InjectedCheckoutForm = () => {
   return (
-    <form
-      style={{
-        marginTop: "7vw",
-        marginLeft: "35%",
-        marginRight: "30%",
-      }}
-      onSubmit={handleSubmit}
-    >
-      <CardSection />
-      <Button
-        type="submit"
-        style={{ marginLeft: "67%" }}
-        disabled={!stripe}
-        variant="primary"
-      >
-        Buy Now
-      </Button>{" "}
-    </form>
+    <ElementsConsumer>
+      {({ elements, stripe }) => (
+        <CheckoutForm elements={elements} stripe={stripe} />
+      )}
+    </ElementsConsumer>
   );
 };
 
-export default CheckoutForm;
+export default InjectedCheckoutForm;
+
+// async function stripeTokenHandler(token) {
+//   try {
+//     const paymentData = { token: token.id };
+
+//     // Use fetch to send the token ID and any other payment data to your server.
+//     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+//     const response = await fetch("/api/stripe", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(paymentData),
+//     });
+
+//     // Return and display the result of the charge.
+//     return response.json();
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
