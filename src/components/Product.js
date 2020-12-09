@@ -272,7 +272,10 @@ const Product = (props) => {
           </Button>
         </Form.Group>
       </div>
-      <div className="bodyWrapper flexWrapper">
+      <div
+        style={{ justifyContent: "space-evenly" }}
+        className="bodyWrapper flexWrapper"
+      >
         {products &&
           products.map(
             ({
@@ -285,69 +288,83 @@ const Product = (props) => {
               name,
               price,
             }) => (
-              <Card key={id} style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={imageURL} />
+              <Card
+                key={id}
+                style={{
+                  width: "45vh",
+                  marginTop: "5vh",
+                  marginBottom: "5vh",
+                  border: "3px solid black",
+                }}
+              >
+                <Card.Img
+                  style={{ height: "65vh", width: "100%" }}
+                  variant="top"
+                  src={imageURL}
+                />
                 <Card.Body>
-                  <Card.Title>{name}</Card.Title>
-                  <Card.Text>{description}</Card.Text>
-                  <Card.Text>{price}</Card.Text>
-                  <Card.Text>{category}</Card.Text>
-                  <Card.Text>{inStock}</Card.Text>
-                  <Link className="btn btn-primary " to={`/products/${id}`}>
-                    View Product2
-                  </Link>
-
-                  <Button
-                    className="btn btn-primary"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleAddToOrder({ id, price, quantity });
-                    }}
-                  >
-                    {" "}
-                    +{" "}
-                  </Button>
-                  <Button
-                    className="btn btn-danger"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      // if not in cart
-                      // if order.product.id !== product.id
-                      //display button
-                      handleRemoveFromOrder(id);
-                    }}
-                  >
-                    {" "}
-                    -{" "}
-                  </Button>
-
-                  {user.isAdmin && (
-                    <>
-                      <Button
-                        style={{}}
-                        className="btn btn-danger"
-                        onClick={(event) => {
-                          console.log("id", id);
-                          event.preventDefault();
-                          handleProductsDelete(id);
-                        }}
-                      >
-                        Delete
-                      </Button>
-
-                      {/* <Button
-                      style={{}}
+                  <Card.Title>Name: {name}</Card.Title>
+                  <Card.Text>
+                    <b>Description:</b> {description}
+                  </Card.Text>
+                  <Card.Text>
+                    <b>Price:</b> ${price / 100.0}
+                  </Card.Text>
+                  <Card.Text>
+                    <b>Category:</b> {category}
+                  </Card.Text>
+                  <Card.Text>
+                    <b>In Stock:</b> {inStock}
+                  </Card.Text>
+                  <div style={{ maxHeight: "12rem" }}>
+                    <Link className="btn btn-primary " to={`/products/${id}`}>
+                      View Product
+                    </Link>
+                    {/* <div style={{ justifyContent: "space-evenly" }}> */}
+                    <Button
+                      style={{
+                        // justifyContent: "space-around",
+                        marginLeft: "12vh",
+                        marginRight: "1vh",
+                      }}
                       className="btn btn-primary"
                       onClick={(event) => {
                         event.preventDefault();
-                        handleUpdateProducts(id);
+                        handleAddToOrder({ id, price, quantity });
                       }}
                     >
-                      Edit
-                    </Button> */}
-                    </>
-                  )}
+                      {" "}
+                      +{" "}
+                    </Button>
+                    <Button
+                      className="btn btn-danger"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        // if not in cart
+                        // if order.product.id !== product.id
+                        //display button
+                        handleRemoveFromOrder(id);
+                      }}
+                    >
+                      {" "}
+                      -{" "}
+                    </Button>
+                  </div>
                 </Card.Body>
+                {user.isAdmin && (
+                  <>
+                    <Button
+                      style={{}}
+                      className="btn btn-danger"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleProductsDelete(id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                )}
               </Card>
             )
           )}

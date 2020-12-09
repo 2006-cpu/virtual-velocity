@@ -68,7 +68,8 @@ async function populateInitialData() {
       {
         id: 1,
         name: "PSA grade 10 Base set Charzard",
-        description: "(dummy description)",
+        description:
+          "Charzard, the fire type pokemon. It spits fire that is hot enough to melt boulders. It may cause forest fires by blowing flames.",
         price: 399995,
         imageURL:
           "https://goldinauctions.com/ItemImages/000051/51339a_med.jpeg",
@@ -78,7 +79,8 @@ async function populateInitialData() {
       {
         id: 2,
         name: "PSA grade 10 Base set Blastoise",
-        description: "(dummy description)",
+        description:
+          "Blastoise the water type pokemon. The cannons on its back is as powerful as a tank gun. Its tough legs and back enable it to withstand the recoil from firing the cannon.",
         price: 349995,
         imageURL:
           "https://d1w8cc2yygc27j.cloudfront.net/-6057793498564273079/7643880271689788165.jpg",
@@ -88,7 +90,8 @@ async function populateInitialData() {
       {
         id: 3,
         name: "PSA grade 10 Base set Venusaur",
-        description: "(dummy description)",
+        description:
+          "Venusaur the plant type pokemon. In battle, this Pokémon swings around two thick vines. If these vines slammed into a 10-story building, they could easily topple it.",
         price: 339995,
         imageURL:
           "https://d9nvuahg4xykp.cloudfront.net/2175094541022248778/2533966137030091563.jpg",
@@ -98,7 +101,8 @@ async function populateInitialData() {
       {
         id: 4,
         name: "PSA grade 10 Base set Mew",
-        description: "(dummy description)",
+        description:
+          "Thought to be the oldest pokemon. Mew is said to have the DNA of every single Pokémon contained within its body, allowing Mew to learn and use any attack.",
         price: 299999,
         imageURL: "https://i.ebayimg.com/images/g/kacAAOSwX-BfmKOL/s-l400.jpg",
         inStock: true,
@@ -107,7 +111,8 @@ async function populateInitialData() {
       {
         id: 5,
         name: "PSA grade 10 Base set MewTwo",
-        description: "(dummy description)",
+        description:
+          "Cloned from Mew, with mans intent to create the perfect pokemon. With a mere thought, it can smash a skyscraper to smithereens.",
         price: 299999,
         imageURL:
           "https://images.psacard.com/s3/cu-psa/cardfacts/1999-pokemon-game-10-mewtwo-holo-1st-edition-gem-mt-69935.jpg?h=1000&format=png&s.roundcorners=10",
@@ -117,7 +122,8 @@ async function populateInitialData() {
       {
         id: 6,
         name: "Pokemon Jungle 1st Edition Box(Sealed)",
-        description: "(dummy description)",
+        description:
+          "In perfect condition, this original set was realised in the year 1995 shortly after the first based set.",
         price: 2400099,
         imageURL:
           "https://assets.catawiki.nl/assets/2017/2/9/5/a/d/5ada6bef-9993-4143-8d95-048fa7db6f5a.jpg",
@@ -127,7 +133,8 @@ async function populateInitialData() {
       {
         id: 7,
         name: "Pokemon Fossil 1st Edition Box(Sealed)",
-        description: "(dummy description)",
+        description:
+          "In perfect condition, this original set was realised in the year 1997 shortly after the second based set.",
         price: 1800099,
         imageURL:
           "https://52f4e29a8321344e30ae-0f55c9129972ac85d6b1f4e703468e6b.ssl.cf2.rackcdn.com/products/pictures/1109930.jpg",
@@ -137,7 +144,8 @@ async function populateInitialData() {
       {
         id: 8,
         name: "Pokemon Base Set 1st Edition Box(Sealed)",
-        description: "(dummy description)",
+        description:
+          "In perfect condition, this original set was realised in the year 1993 shortly after gaining popular demand by the original Pokemon tv show released in the US.",
         price: 4000099,
         imageURL:
           "https://dyn1.heritagestatic.com/lf?set=path%5B2%2F0%2F3%2F6%2F8%2F20368081%5D%2Csizedata%5B850x600%5D&call=url%5Bfile%3Aproduct.chain%5D",
@@ -147,7 +155,8 @@ async function populateInitialData() {
       {
         id: 9,
         name: "Pokemon Mystery Box",
-        description: "(dummy description)",
+        description:
+          "This mystery box, will contain several originally sealed packs along with the chance of pulling a original first edition holo based card.",
         price: 4599,
         imageURL: "https://i.ebayimg.com/images/g/5aoAAOSwOghfnj31/s-l400.jpg",
         inStock: true,
