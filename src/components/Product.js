@@ -24,7 +24,6 @@ import {
   Route,
 } from "react-router-dom";
 
-
 const Product = (props) => {
   const {
     token,
@@ -155,7 +154,7 @@ const Product = (props) => {
       //   const deletedProduct = products.filter(
       //     (product) => data.id !== product.id
       //   );
-      //   console.log("data", data);
+      console.log("data", data);
       //   console.log("deletedProduct", deletedProduct);
       //   setProducts(deletedProduct);
       // }
@@ -279,7 +278,6 @@ const Product = (props) => {
               price,
             }) => (
               <>
-                {/* {isAdmin ? ( */}
                 <Card style={{ width: "18rem" }}>
                   <Card.Img variant="top" src={imageURL} />
                   <Card.Body>
@@ -315,31 +313,33 @@ const Product = (props) => {
                       {" "}
                       -{" "}
                     </Button>
-
-                    <Button
-                      style={{}}
-                      className="btn btn-danger"
-                      onClick={(event) => {
-                        console.log("id", id);
-                        event.preventDefault();
-                        handleProductsDelete(id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      style={{}}
-                      className="btn btn-primary"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        handleUpdateProducts(id);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    {user.isAdmin && (
+                      <>
+                        <Button
+                          style={{}}
+                          className="btn btn-danger"
+                          onClick={(event) => {
+                            console.log("id", id);
+                            event.preventDefault();
+                            handleProductsDelete(id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          style={{}}
+                          className="btn btn-primary"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleUpdateProducts(id);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </>
+                    )}
                   </Card.Body>
                 </Card>
-                {/* ) : null} */}
               </>
             )
           )}

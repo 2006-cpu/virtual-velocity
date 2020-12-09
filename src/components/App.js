@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getProducts, getUser, getOrdersByUserId } from "../api";
+import {
+  getProducts,
+  getUser,
+  getOrdersByUserId,
+  getCartByUser,
+  setCart,
+} from "../api";
 import {
   Product,
   SingleProduct,
@@ -31,25 +37,41 @@ const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLISHABLE_KEY}`);
 const App = () => {
   //upon a successful purchase, stripe form should disappear and reset state
   const [showStripe, setShowStripe] = useState(true);
-
+  const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
   const [user, setUser] = useState({});
   const [orders, setOrders] = useState([]);
-  useEffect(() => {
-    getProducts().then(setProducts);
-    const localToken = getLocalToken();
-    if (localToken) {
-      setToken(localToken);
-      getUser(localToken).then((data) => setUser(data));
+
+  const handleInitialLoad = async () => {
+    try {
+      const fetchProducts = await getProducts();
+      setProducts(fetchProducts);
+      if (getLocalToken()) {
+        setToken(getLocalToken());
+        const userData = await getUser(getLocalToken());
+        setUser(userData);
+        if (userData.isAdmin) {
+          // grab all orders
+        } else {
+          // grab all current users orders including the cart
+          const fetchOrders = await getOrdersByUserId(
+            userData.id,
+            getLocalToken()
+          );
+          setOrders(fetchOrders);
+          const fetchCart = await getCartByUser(getLocalToken());
+          setCart(fetchCart);
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    getUser(token).then(setUser);
-    // getOrdersByUserId(user.id, token).then(setOrders);
-  }, [token]);
-
+    handleInitialLoad();
+  }, []);
   console.log("orders in main app", orders);
 
   return (
