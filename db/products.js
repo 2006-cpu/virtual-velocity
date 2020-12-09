@@ -84,27 +84,27 @@ const updateProduct = async ({ id, ...fields }) => {
   }
 };
 
-const destroyProduct = async ({ id }) => {
+const destroyProduct = async (id) => {
   try {
-    const { rows: order_products } = await client.query(
+    const {
+      rows: [order_products],
+    } = await client.query(
       `
-			DELETE FROM order_products
-			WHERE "productId" = $1
-			AND "orderId" NOT IN
-			(SELECT orders.id FROM orders
-			JOIN order_products ON orders.id = order_products."orderId"
-			WHERE orders.status = 'complete'
-			and order_products."productId" = ${id})
-			RETURNING *;
-		  `,
+    DELETE FROM order_products
+    USING products
+    WHERE products.id = order_products."productId"
+    AND products.id = $1;
+    `,
       [id]
     );
-    console.log(order_products);
+
+    console.log("orderProducts", order_products);
     const { rows: product } = await client.query(
       `
-		  	DELETE FROM products
-		  	WHERE id = $1
-			`,
+    DELETE FROM products
+    WHERE products.id = $1
+    RETURNING *;
+    `,
       [id]
     );
     return product;
@@ -112,6 +112,36 @@ const destroyProduct = async ({ id }) => {
     throw error;
   }
 };
+
+// const destroyProduct = async ({ id }) => {
+//   try {
+//     const { rows: order_products } = await client.query(
+//       `
+// 			DELETE FROM order_products
+// 			WHERE "productId" = $1
+// 			AND "orderId" NOT IN
+// 			(SELECT orders.id FROM orders
+// 			JOIN order_products ON orders.id = order_products."orderId"
+// 			WHERE orders.status = 'complete'
+// 			and order_products."productId" = ${id})
+// 			RETURNING *;
+// 		  `,
+//       [id]
+//     );
+
+//     const { rows: product } = await client.query(
+//       `
+// 		  	DELETE FROM products
+// 		  	WHERE id = $1
+//        RETURNING *;
+// 			`,
+//       [id]
+//     );
+//     return product;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 module.exports = {
   destroyProduct,

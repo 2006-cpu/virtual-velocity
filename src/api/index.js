@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getLocalToken } from '../util'
+import { getLocalToken } from "../util";
 
 const BASE_URL = "/api";
 
@@ -26,15 +26,23 @@ export async function getProducts() {
 
 export async function login(username, password) {
   try {
-    const { data } = await axios.post(`${BASE_URL}/users/login`, { username, password });
+    const { data } = await axios.post(`${BASE_URL}/users/login`, {
+      username,
+      password,
+    });
     return data;
   } catch (error) {
     throw error;
   }
 }
 
-
-export async function register({ username, password, firstName, lastName, email }) {
+export async function register({
+  username,
+  password,
+  firstName,
+  lastName,
+  email,
+}) {
   try {
     const { data } = await axios.post(`${BASE_URL}/users/register`, {
       username,
@@ -55,10 +63,10 @@ export async function getUser(token) {
   try {
     const { data } = await axios.get(`${BASE_URL}/users/me`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    console.log("userData from API", data)
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("userData from API", data);
     return data;
   } catch (error) {
     throw error;
@@ -69,10 +77,10 @@ export async function getOrdersByUserId(userId, token) {
   try {
     const { data } = await axios.get(`${BASE_URL}/users/${userId}/orders`, {
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
-    console.log("orders in api orders", data)
+    console.log("orders in api orders", data);
 
     return data;
   } catch (error) {
@@ -210,7 +218,7 @@ export async function updateProduct(
 
 export async function deleteProduct(id, token) {
   try {
-    const { data } = await axios.delete(`${BASE_URL}/products/${id}`, {
+    const data = await axios.delete(`${BASE_URL}/products/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -228,6 +236,6 @@ export async function deleteProduct(id, token) {
 export const client = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "Authorization": `Bearer ${getLocalToken()}`
-  }
+    Authorization: `Bearer ${getLocalToken()}`,
+  },
 });

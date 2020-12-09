@@ -51,6 +51,7 @@ router.patch("/:productId", isAdmin, async (req, res, next) => {
 
 router.delete("/:productId", isAdmin, async (req, res, next) => {
   const { productId } = req.params;
+  console.log("productId", productId);
 
   try {
     const deletedProducts = await destroyProduct(productId);

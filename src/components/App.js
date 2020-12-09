@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  getProducts,
-  getUser,
-  getOrdersByUserId,
-  getCartByUser,
-  setCart,
-} from "../api";
+import { getProducts, getUser, getOrdersByUserId, getCartByUser } from "../api";
 import {
   Product,
   SingleProduct,
@@ -72,6 +66,7 @@ const App = () => {
   useEffect(() => {
     handleInitialLoad();
   }, []);
+
   console.log("orders in main app", orders);
 
   return (
