@@ -41,8 +41,8 @@ const createProduct = async ({
       rows: [product],
     } = await client.query(
       `
-            INSERT INTO products (name, description, price, "imageURL", "inStock", category)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO products(name, description, price, "imageURL", "inStock", category)
+            VALUES($1, $2, $3, $4, $5, $6)
             RETURNING *;
         `,
       [name, description, price, imageURL, inStock, category]
@@ -53,8 +53,71 @@ const createProduct = async ({
   }
 };
 
+const updateProduct = async ({ id, ...fields }) => {
+  const fieldKeys = Object.keys(fields)
+    .map((fieldName, index) => `"${fieldName}"=$${index + 1}`)
+    .join(", ");
+
+  const setValues = Object.values(fields);
+
+  if (fieldKeys.length === 0) {
+    return;
+  }
+
+  setValues.push(id);
+
+  try {
+    const {
+      rows: [product],
+    } = await client.query(
+      `
+            UPDATE products
+            SET ${setString}
+            WHERE id = $${setValues.length}
+            RETURNING *;
+        `,
+      setValues
+    );
+    return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const destroyProduct = async (id) => {
+  try {
+    const { rows: order_products } = await client.query(
+      `
+			DELETE FROM order_products
+			WHERE "productId" = $1
+			AND "orderId" NOT IN
+			(SELECT orders.id FROM orders
+			JOIN order_products ON orders.id = order_products."orderId"
+			WHERE orders.status = 'completed'
+			and order_products."productId" = ${id})
+			RETURNING *;
+		  `,
+      [id]
+    );
+
+    const { rows: product } = await client.query(
+      `
+		  	DELETE FROM products
+        WHERE id = $1
+        RETURNING *;
+			`,
+      [id]
+    );
+    return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
+  destroyProduct,
   getProductById,
   getAllProducts,
   createProduct,
+  updateProduct,
 };

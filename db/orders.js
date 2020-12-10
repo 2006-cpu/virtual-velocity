@@ -50,8 +50,8 @@ const reduceOrders = (queriedOrders) => {
   return Object.values(ordersWithProducts);
 };
 
+// return the order, include the order's products
 const getOrderById = async (id) => {
-  // return the order, include the order's products
   try {
     const { rows: orders } = await client.query(
       `
@@ -85,9 +85,8 @@ const getOrderById = async (id) => {
   }
 };
 
+//  select and return an array of orders, include their products
 const getAllOrders = async () => {
-  //  select and return an array of orders, include their products
-
   try {
     const { rows: orders } = await client.query(`
         SELECT
@@ -117,8 +116,8 @@ const getAllOrders = async () => {
   }
 };
 
+//  select and return an array of orders made by user, inlude their products
 const getOrdersByUser = async ({ id }) => {
-  //  select and return an array of orders made by user, inlude their products
   try {
     const { rows: orders } = await client.query(
       `
@@ -152,34 +151,9 @@ const getOrdersByUser = async ({ id }) => {
   }
 };
 
+//  select and return an array of orders which have a specific productId in their order_products join, include their products
 const getOrdersByProduct = async ({ id }) => {
-  //  select and return an array of orders which have a specific productId in their order_products join, include their products
   try {
-    const { rows: orderNumbers } = await client.query(
-      `
-        SELECT "orderId"
-        FROM order_products
-        WHERE "productId"=$1
-      `,
-      [id]
-    );
-
-    const arrOrderNumbers = orderNumbers.map(({ orderId }) => {
-      return orderId;
-    });
-
-    const conditionalString = () => {
-      if (arrOrderNumbers.length === 1) {
-        return "$1";
-      } else {
-        return arrOrderNumbers
-          .map((x, index) => {
-            return `$${index + 1}`;
-          })
-          .join(" OR orders.id = ");
-      }
-    };
-
     const { rows: orders } = await client.query(
       `
         SELECT 
@@ -202,9 +176,14 @@ const getOrdersByProduct = async ({ id }) => {
         ON order_products."orderId" = orders.id
         LEFT JOIN products
         ON products.id = order_products."productId"
-        WHERE orders.id = ${conditionalString()};
+        WHERE orders.id 
+        IN (
+        SELECT "orderId"
+        FROM order_products
+        WHERE "productId"=$1
+        );
 `,
-      arrOrderNumbers
+      [id]
     );
     return reduceOrders(orders);
   } catch (error) {
@@ -212,11 +191,10 @@ const getOrdersByProduct = async ({ id }) => {
   }
 };
 
+//  select one user's order (look up by orders."userId")
+//  ...an order that that has status = created
+//  return the order, include the order's products
 const getCartByUser = async ({ id }) => {
-  // getCartByUser({ id }) or getCartByUser(user)
-  //  select one user's order (look up by orders."userId")
-  //  ...an order that that has status = created
-  //  return the order, include the order's products
   try {
     const { rows: orders } = await client.query(
       `
@@ -245,15 +223,14 @@ const getCartByUser = async ({ id }) => {
 `,
       [id]
     );
-    return reduceOrders(orders);
+    return reduceOrders(orders)[0];
   } catch (error) {
     throw error;
   }
 };
 
+//  create and return the new order
 const createOrder = async ({ status, userId }) => {
-  // createOrder({ status, userId })
-  //  create and return the new order
   try {
     const {
       rows: [order],
@@ -305,10 +282,10 @@ const updateOrder = async ({ id, ...fields }) => {
   }
 };
 
+// Find the order with id equal to the passed in id
+// Only update the status to completed
+// Return the updated order
 const completeOrder = async ({ id }) => {
-  // Find the order with id equal to the passed in id
-  //  Only update the status to completed
-  //  Return the updated order
 
   try {
     const {
@@ -328,12 +305,10 @@ const completeOrder = async ({ id }) => {
     throw error;
   }
 };
-
+    
+// Update the order's status to cancelled
 const cancelOrder = async (id) => {
   try {
-    //  cancelOrder
-    // cancelOrder(id)
-    //  Update the order's status to cancelled
     const {
       rows: [order],
     } = await client.query(

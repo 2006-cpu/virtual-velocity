@@ -43,10 +43,10 @@ apiRouter.use((req, res, next) => {
   next();
 });
 
-apiRouter.use('/users', require('./users'))
-apiRouter.use('/products', require('./products'));
-apiRouter.use('/orders', require('./orders'));
-apiRouter.use('/order_products', require('./order_products'));
+apiRouter.use("/users", require("./users"));
+apiRouter.use("/products", require("./products"));
+apiRouter.use("/orders", require("./orders"));
+apiRouter.use("/order_products", require("./order_products"));
 apiRouter.use("/stripe", require("./stripe"));
 
 // 404 handler

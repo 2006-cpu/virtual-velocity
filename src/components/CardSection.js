@@ -1,5 +1,4 @@
 import React from "react";
-import { useStripe } from "@stripe/react-stripe-js";
 import { CardElement } from "@stripe/react-stripe-js";
 import "./CardSection.css";
 
@@ -25,7 +24,7 @@ function CardSection() {
   return (
     <div>
       <label>
-        <div style={{ marginLeft: "13vw", marginRight: "2vw" }}>
+        <div style={{ marginLeft: "2vw", marginRight: "2vw" }}>
           Card details
         </div>
         <CardElement options={CARD_ELEMENT_OPTIONS} />

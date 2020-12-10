@@ -2,13 +2,7 @@ const { client } = require("./index");
 const bcrypt = require("bcrypt");
 const SALT_COUNT = 10;
 
-async function createUser({ 
-    username, 
-    password, 
-    firstName, 
-    lastName, 
-    email 
-}) {
+async function createUser({ username, password, firstName, lastName, email }) {
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
 
@@ -31,18 +25,20 @@ async function createUser({
   }
 }
 
-async function setUserAsAdmin(id){
-    console.log(`Setting user with id: ${id} as an admin`);
-    try {
-    await client.query(`
+async function setUserAsAdmin(id) {
+  try {
+    await client.query(
+      `
         UPDATE users
         SET "isAdmin" = true
         WHERE id = $1;
-    `, [id]);
-    } catch (error) {
-        console.error('Unable to set admin');
-        throw error;
-    }
+    `,
+      [id]
+    );
+  } catch (error) {
+    console.error("Unable to set admin");
+    throw error;
+  }
 }
 
 async function getUser({ username, password }) {
@@ -122,11 +118,41 @@ async function getUserByUsername(username) {
   }
 }
 
+async function updateUser(id, fields) {
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
+
+  const setValues = Object.values(fields);
+  setValues.push(id);
+
+  if (setString.length === 0) {
+    return;
+  }
+
+  try {
+    const result = await client.query(
+      `
+      UPDATE users
+      SET ${setString}
+      WHERE id=$${setValues.length}
+      RETURNING *;
+    `,
+      setValues
+    );
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getUser,
   getAllUsers,
   getUserById,
   getUserByUsername,
-  setUserAsAdmin
+  setUserAsAdmin,
+  updateUser,
 };

@@ -8,6 +8,7 @@ const {
   createOrder,
   updateOrder,
   cancelOrder,
+  completeOrder
 } = require("../db/utils");
 
 
@@ -87,5 +88,15 @@ ordersRouter.post( "/:orderId/products", requireUser, async (req, res, next) => 
     }
   }
 );
+
+ordersRouter.patch("/:orderId/complete", requireUser, async (req, res, next) => {
+    const { orderId } = req.params;
+    try {
+        const completedOrder = await completeOrder({id: orderId});
+        res.send(completedOrder);
+    } catch (error) {
+        next(error);
+    }
+})
 
 module.exports = ordersRouter;

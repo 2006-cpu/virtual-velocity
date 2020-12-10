@@ -5,7 +5,7 @@ html {
 
 .hero-image {
   background-image: linear-gradient(rgba(158, 158, 158, 0.534), rgb(0, 0, 0)),
-    url('https://cdn.gamer-network.net/2018/usgamer/pokemon-trading-cards_older.jpg');
+    url("https://cdn.gamer-network.net/2018/usgamer/pokemon-trading-cards_older.jpg");
   height: 70vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -34,10 +34,6 @@ h1 {
 ul .btnStarted {
   color: black;
 }
-
-/* a:visited {
-  color: red;
-} */
 
 ul {
   list-style-type: none;
