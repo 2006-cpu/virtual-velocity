@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Account, SingleOrder, Cart } from "./";
-import { 
+import {
     getOrdersByUserId,
     cancelOrder,
     completeOrder

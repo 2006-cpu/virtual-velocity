@@ -5,6 +5,12 @@ import {
     cancelOrder,
     completeOrder
 } from "../api"
+import { loadStripe } from '@stripe/stripe-js';
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe('pk_test_51Ht3KIDb1cCPXKe0pegkjh96D6Wf83gqHU1T6RaalLEfch8L4XcJnUismKd2bctYGkVLbb5rkG7a1jYvNz7Wh0eG00v9V1t8T9');
+
+
 const Cart = (props) => {
     const {token, user, setUser, cart, setCart} = props
     console.log('cart state in Cart component', cart);
@@ -12,7 +18,7 @@ const Cart = (props) => {
     const handleCheckout = async () => {
         try {
             setCart({});
-            await completeOrder(cart.id, token); 
+            await completeOrder(cart.id, token);
             //cart to be completed in api
             alert("You've checked out congrats!")
         } catch (error) {
@@ -31,7 +37,7 @@ const Cart = (props) => {
         }
     }
 
-    return ( 
+    return (
         <div className="bodyWrapper">
             <h1> Shopping Cart </h1>
             < SingleOrder order={cart} />
@@ -41,6 +47,9 @@ const Cart = (props) => {
             <button className="btn btn-danger btn-block" onClick={() => {
                 handleCancel();
             }}>Cancel Order</button>
+                    <button role="link">
+      Sams stripe Checkout
+    </button>
         </div>
         )
 }
