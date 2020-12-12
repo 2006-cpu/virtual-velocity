@@ -77,9 +77,9 @@ const Cart = (props) => {
 
 
 
-      {/* <button role="link" onClick={handleClick}>
+      <button role="link" onClick={handleClick}>
       Stripe Test Checkout
-    </button> */}
+    </button>
 
 
         </div>
