@@ -8,7 +8,8 @@ import {
 import { loadStripe } from '@stripe/stripe-js';
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_51Ht3KIDb1cCPXKe0pegkjh96D6Wf83gqHU1T6RaalLEfch8L4XcJnUismKd2bctYGkVLbb5rkG7a1jYvNz7Wh0eG00v9V1t8T9');
+const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLISHABLE_KEY}`);
+
 
 
 const Cart = (props) => {
@@ -37,6 +38,30 @@ const Cart = (props) => {
         }
     }
 
+    const handleClick = async (event) => {
+        // Get Stripe.js instance
+        const stripe = await stripePromise;
+
+        // Call your backend to create the Checkout Session
+        const response = await fetch('/create-checkout-session', { method: 'POST' });
+
+        const session = await response.json();
+
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+          sessionId: cart.id,
+        });
+
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer
+          // using `result.error.message`.
+        }
+      };
+
+
+
+
     return (
         <div className="bodyWrapper">
             <h1> Shopping Cart </h1>
@@ -47,9 +72,16 @@ const Cart = (props) => {
             <button className="btn btn-danger btn-block" onClick={() => {
                 handleCancel();
             }}>Cancel Order</button>
-                    <button role="link">
-      Sams stripe Checkout
-    </button>
+
+
+
+
+
+      {/* <button role="link" onClick={handleClick}>
+      Stripe Test Checkout
+    </button> */}
+
+
         </div>
         )
 }

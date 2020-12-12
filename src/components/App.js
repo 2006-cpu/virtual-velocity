@@ -18,7 +18,8 @@ import {
   Home,
   Footer,
   Checkout,
-  CheckoutForm
+  CheckoutForm,
+  SuccessPage
 } from "./";
 
 import {
@@ -131,6 +132,9 @@ const App = () => {
               />
             ) : null}
           </Elements>
+        </Route>
+        <Route exact path="/success">
+          <SuccessPage />
         </Route>
         <Footer />
       </div>

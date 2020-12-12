@@ -15,4 +15,5 @@ export { default as CheckoutForm } from "./CheckoutForm";
 export { default as Checkout } from "./Checkout";
 export { default as CardSection } from "./CardSection";
 export { default as Contact } from "./Contact"
+export { default as SuccessPage } from "./SuccessPage"
 

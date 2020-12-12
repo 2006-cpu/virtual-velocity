@@ -47,8 +47,8 @@ apiRouter.use("/users", require("./users"));
 apiRouter.use("/products", require("./products"));
 apiRouter.use("/orders", require("./orders"));
 apiRouter.use("/order_products", require("./order_products"));
-apiRouter.use("/stripe", require("./stripe"));
-
+// apiRouter.use("/stripe", require("./stripe"));
+// apiRouter.use("/create-checkout-session", require("./stripe"));
 // 404 handler
 apiRouter.get("*", (req, res, next) => {
   res.status(404).send("Page was not found");
