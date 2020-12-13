@@ -5,6 +5,7 @@ const {
   getOrderById,
   getUserById,
   updateOrderProduct,
+  removeProductFromOrder
 } = require("../db/utils.js");
 
 const { getOrderProductById, destroyOrderProduct } = require("../db/utils");
@@ -40,7 +41,14 @@ orderProductsRouter.patch(
   }
 );
 
-orderProductsRouter.delete('/some rul', async (req, res, next) => {
+orderProductsRouter.delete('/remove/:orderId/:productId', requireUser, async (req, res, next) => {
+    const { orderId, productId } = req.params;
+    try {
+        const order_product = await removeProductFromOrder(orderId, productId);
+        res.send(order_product);
+    } catch (error) {
+        next(error);
+    }
 });
 
 orderProductsRouter.delete(

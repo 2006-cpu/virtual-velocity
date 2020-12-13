@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap"
-import { getOrdersByUserId } from "../api";
+import { 
+    getOrdersByUserId,
+    removeProductFromOrder,
+} from "../api";
 import "./SingleOrder.css";
 
 const SingleOrder = (props) => {
-  const { order, isCart } = props;
+  const { order, isCart, setCart, token } = props;
   const { orderId } = useParams();
-
-    const handleRemoveFromCart = async () => {
-         
-    };
 
     return (
         order &&
@@ -23,6 +22,7 @@ const SingleOrder = (props) => {
             <div className="products">
             Items inside cart:
             {order.products && order.products.map(({ id, name, description, category, price, quantity }) => { 
+                let product = { id, name, description, category, price, quantity };
                return(
                    <div key={id} className="product">
                    <div>Name: {name} </div>
@@ -30,8 +30,11 @@ const SingleOrder = (props) => {
                    <div> Description: {description} </div>
                    <div> Price: {price / 100.0} </div>
                    <div> Quantity: {quantity} </div>
-                   {isCart && <Button className="btn btn-danger" onClick={()=>{
-                       console.log('im being clicked');
+                   {isCart && <Button className="btn btn-danger" onClick={async () => {
+                       await removeProductFromOrder(order.id, product.id, token);
+                       const newProducts = order.products.filter(({id}) => id !== product.id);
+                       const newCart = {...order, products: newProducts}
+                       setCart(newCart); 
                    }}>Remove</Button>}
                    </div>
                );

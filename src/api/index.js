@@ -123,12 +123,14 @@ export async function addProductToOrder(
   }
 }
 
-export async function removeProductToOrder(){
-};
 
-export async function removeProductFromOrder(productId) {
+export async function removeProductFromOrder(orderId, productId, token) {
   try {
-    const data = axios.delete(`${BASE_URL}/order_products/${productId}`);
+    const { data } = await axios.delete(`${BASE_URL}/order_products/remove/${orderId}/${productId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+    });
 
     return data;
   } catch (error) {
@@ -151,7 +153,7 @@ export async function getCartByUser(token) {
 
 export async function createOrder(token) {
   try {
-    const data = axios.post(`${BASE_URL}/orders`,{
+    const { data } = axios.post(`${BASE_URL}/orders`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },

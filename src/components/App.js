@@ -72,7 +72,18 @@ const App = () => {
         const fetchOrders = await getOrdersByUserId(user.id, token);
         setOrders(fetchOrders);
         const fetchCart = await getCartByUser(token);
-        setCart(fetchCart);
+        if(fetchCart){
+            setCart(fetchCart);
+        } else {
+            //const newCart = await createOrder(token);
+            let newCart = {
+                id: 32,
+                status: 'created',
+                userId: user.id,
+                products: []
+            };
+            setCart(newCart);
+        }
     }
 
   useEffect(() => {
