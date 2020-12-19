@@ -87,7 +87,7 @@ async function updateOrderProduct({ id, ...fields }) {
 async function destroyOrderProduct(id) {
   try {
     const {
-      rows: [routine_activity],
+      rows: [order_product],
     } = await client.query(
       `
         DELETE
@@ -98,10 +98,25 @@ async function destroyOrderProduct(id) {
       [id]
     );
 
-    return routine_activity;
+    return order_product;
   } catch (error) {
     throw error;
   }
+}
+
+async function removeProductFromOrder(orderId, productId){
+    try {
+        const { rows: [order_product] } = await client.query(`
+            DELETE
+            FROM order_products
+            WHERE "orderId" = $1
+            AND "productId" = $2
+            RETURNING *;
+        `, [orderId, productId]);
+        return order_product;
+    } catch {
+        throw error;
+    }
 }
 
 module.exports = {
@@ -110,4 +125,5 @@ module.exports = {
   updateOrderProduct,
   destroyOrderProduct,
   createOrderProduct,
+  removeProductFromOrder
 };

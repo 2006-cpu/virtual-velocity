@@ -47,7 +47,8 @@ const SingleProduct = (props) => {
                 return;
             }
         })
-    const newProducts = [...cart.products, product]
+        const newProduct = {...product, quantity: 1}
+    const newProducts = [...cart.products, newProduct]
     const newCart = {
       ...cart,
       products: newProducts,
