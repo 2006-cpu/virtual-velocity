@@ -20,7 +20,7 @@ const Cart = (props) => {
            // setCart(newCart);
             setCart({...cart, products: []});
             swal({
-                title: 'Confiming Order',
+                title: 'Confirming Order',
                 text: 'You have successfully placed your order',
                 icon: 'success',
             }).then((isClicked) => {
